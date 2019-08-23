@@ -41,7 +41,7 @@ Vue.use(VueProgressBar, {
 })
 
 let routes = [
-    { path: '/dashboard', component: require('./components/Dashboard').default },
+    { path: '/', component: require('./components/Dashboard').default },
     { path: '/department', component: require('./components/department/Department').default },
     { path: '/income-source', component: require('./components/incomesource/IncomeSource').default }
 ]
@@ -58,6 +58,7 @@ Vue.filter('myDate', function (value) {
 window.Fire = new Vue();
 
 Vue.component('DepartmentEdit-component', require('./components/department/DepartmentEdit').default);
+Vue.component('home-component', require('./components/Home').default);
 
 
 

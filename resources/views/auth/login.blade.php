@@ -25,7 +25,7 @@
             <div class="card">
                 <div class="card-body">
                     <img class="auth-form__logo d-table mx-auto mb-3"
-                         src="{{asset('asset/images/shards-dashboards-logo.svg')}}"
+                         src="{{asset('asset/images/logo.jpg')}}"
                          alt="Shards Dashboards - Login Template"><h5
                             class="auth-form__title text-center mb-4">Access Your Account</h5>
                     <form method="POST" action="{{ route('login') }}">
@@ -63,12 +63,12 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                                <button type="submit" class="d-table mx-auto btn btn-accent btn-pill">
+                                <button type="submit" class="d-table mx-auto btn btn-warning text-white btn-pill">
                                     {{ __('Access Account') }}
                                 </button>
 
 
-                                    <a class="btn auth-form__meta" href="{{ route('register') }}">
+                                    <a class="btn auth-form__meta text-warning" href="{{ route('register') }}">
                                         {{ __('Create new account?') }}
                                     </a>
 

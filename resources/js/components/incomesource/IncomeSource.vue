@@ -14,7 +14,9 @@
                 <div class="card card-small mb-4">
                     <div class="card-header border-bottom">
                         <div class="input-group col-md-6 col-lg-4 ml-auto">
-                            <button class="btn btn-primary ml-auto"><i class="fas fa-plus mr-2"></i>Add new income source</button>
+                            <button class="btn btn-primary ml-auto" @click="NewModal"><i class="fas fa-plus mr-2"></i>Add
+                                new income source
+                            </button>
                         </div>
                     </div>
                     <div class="card-body p-0 pb-3 text-center">
@@ -23,17 +25,18 @@
                                 <thead class="bg-light">
                                 <tr>
                                     <th scope="col" class="border-0">#</th>
-                                    <th scope="col" class="border-0">Department Name</th>
-                                    <th scope="col" class="border-0">How many source</th>
+                                    <th scope="col" class="border-0">Income Source Name</th>
+                                    <th scope="col" class="border-0">Department</th>
+                                    <th scope="col" class="border-0">Remarks</th>
                                     <th scope="col" class="border-0">Modify</th>
                                     <th scope="col" class="border-0">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <DepartmentEdit-component v-for="department in departments.data"
-                                                          v-bind:department="department"
-                                                          @delete-departments="deleteDepartment"
-                                                          v-bind:key="department.id"></DepartmentEdit-component>
+                                <incomesource v-for="income in incomes.data" :departments="departments"
+                                                          v-bind:income="income"
+                                                          @delete-income="deleteIncome"
+                                                          v-bind:key="income.id"></incomesource>
                                 </tbody>
                             </table>
                         </perfect-scrollbar>
@@ -46,45 +49,78 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+        </div>
+        <!-- End Default Light Table -->
+        <!-- Modal -->
+        <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addNewLabel">Add New Income Source</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form @submit.prevent="createIncome" @keydown="form.onKeydown($event)">
                         <div class="modal-body">
-                            ...
+                            <div class="form-group">
+                                <input type="text" v-model="form.income_source" name="income_source" class="form-control" id="validationServer01"
+                                       placeholder="Income Source Name" :class="{ 'is-invalid': form.errors.has('income_source') }">
+                                <has-error :form="form" field="income_source"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" v-model="form.department_id" name="department_id"
+                                        :class="{ 'is-invalid': form.errors.has('department_id') }">
+                                    <option value="" selected="" disabled>Choose Department</option>
+                                    <option v-for="department in departments.data"
+                                            v-bind:value="department.id">{{department.name}}</option>
+                                </select>
+                                <has-error :form="form" field="department_id"></has-error>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" v-model="form.remarks" name="remarks" class="form-control" id="validationServer01"
+                                       placeholder="Remarks" :class="{ 'is-invalid': form.errors.has('remarks') }">
+                                <has-error :form="form" field="remarks"></has-error>
+                            </div>
+
+
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
-        <!-- End Default Light Table -->
-        </div>
+    </div>
 </template>
 
 <script>
+    import incomesource from './incomeSourceEdit';
     export default {
         data() {
             return {
                 departments: {},
+                incomes: {},
                 form: new Form({
-                    name: ''
+                    income_source: '',
+                    department_id: '',
+                    remarks: ''
                 })
             }
         },
         methods: {
+            NewModal() {
+                this.form.reset();
+                $('#addNew').modal('show');
+            },
             loadDepartment() {
                 axios.get('api/department').then(({data}) => (this.departments = data));
+            },
+            loadIncome() {
+                axios.get('api/incomesource').then(({data}) => (this.incomes = data));
             },
             getResults(page = 1) {
                 axios.get('api/department?page=' + page)
@@ -92,7 +128,7 @@
                         this.departments = response.data;
                     });
             },
-            deleteDepartment(id) {
+            deleteIncome(id) {
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -104,7 +140,7 @@
                 }).then((result) => {
                     if (result.value) {
                         this.$Progress.start()
-                        this.form.delete('api/department/' + id)
+                        this.form.delete('api/incomesource/' + id)
                             .then((data) => {
                                 Fire.$emit('AfterCreate');
                                 swal.fire(
@@ -121,46 +157,34 @@
                     }
                 })
             },
-            createDepartment() {
+            createIncome() {
                 this.$Progress.start()
-                this.form.post('api/department')
+                this.form.post('api/incomesource')
                     .then(() => {
                         toast.fire({
                             type: 'success',
-                            title: 'Department create successfully'
+                            title: 'Income source name create successfully'
                         })
                         this.form.reset()
                         Fire.$emit('AfterCreate')
                         this.$Progress.finish()
+                        $('#addNew').modal('hide');
                     })
-                    .catch(error => {
-                        let data = error.response;
-                        if (data.status === 422) {
-                            let allData = '', mainData = '';
-                            $.each(data.data.errors, function (key, value) {
-                                if ($.isPlainObject(value)) {
-                                    $.each(value, function (key, value) {
-                                        allData += value + "<br/>";
-                                    });
-                                } else {
-                                    mainData += value + "<br/>";
-                                }
-                            });
-                            swal.fire({
-                                title: 'Warning',
-                                html: mainData,
-                                type: 'error'
-                            })
-                            this.$Progress.fail()
-                        }
+                    .catch(()=>{
+                        this.$Progress.fail()
+                        swal("Failed!", 'There was something wrong.', 'warning')
                     })
             }
         },
         created() {
             this.loadDepartment();
+            this.loadIncome();
             Fire.$on('AfterCreate', () => {
-                this.loadDepartment();
+                this.loadIncome();
             });
+        },
+        components:{
+            incomesource
         }
     }
 </script>

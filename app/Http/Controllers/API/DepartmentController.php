@@ -10,7 +10,7 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        return department::latest()->paginate(3);
+        return department::latest()->paginate(10);
     }
 
     public function store(Request $request)
@@ -34,14 +34,6 @@ class DepartmentController extends Controller
     {
         //
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [

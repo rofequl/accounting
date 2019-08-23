@@ -25,16 +25,20 @@
     <div class="nav-wrapper">
         <ul class="nav nav--no-borders flex-column">
             <li class="nav-item">
-                <a class="nav-link " href="errors.html">
-                    <i class="material-icons">error</i>
+                <router-link class="nav-link " to="/dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
-                </a>
+                </router-link>
             </li>
-            <li class="nav-item">
-                <a class="nav-link " href="errors.html">
-                    <i class="material-icons">error</i>
-                    <span>Setting</span>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                    <i class="material-icons">&#xE917;</i>
+                    <span>Credit Setup</span>
                 </a>
+                <div class="dropdown-menu dropdown-menu-small">
+                    <router-link class="dropdown-item " to="/department">Department</router-link>
+                    <router-link class="dropdown-item " to="/income-source">Source of income</router-link>
+                </div>
             </li>
         </ul>
     </div>

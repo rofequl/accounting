@@ -1,6 +1,6 @@
 <template>
     <div>
-        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0">
+        <aside class="main-sidebar col-12 col-md-3 col-lg-2 px-0" style="z-index: 1040;">
             <div class="main-navbar">
                 <nav class="navbar align-items-stretch navbar-light bg-white flex-md-nowrap border-bottom p-0">
                     <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
@@ -40,6 +40,38 @@
                         <div class="dropdown-menu dropdown-menu-small">
                             <router-link class="dropdown-item " to="/department">Department</router-link>
                             <router-link class="dropdown-item " to="/income-source">Source of income</router-link>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                            <i class="material-icons">&#xE917;</i>
+                            <span>Debit Setup</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-small">
+                            <router-link class="dropdown-item " to="/expenditure">Expenditure Head</router-link>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/credit">
+                            <i class="material-icons">&#xE917;</i>
+                            <span>Credit Entry</span>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" to="/debit">
+                            <i class="material-icons">&#xE917;</i>
+                            <span>Debit Entry</span>
+                        </router-link>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                            <i class="material-icons">&#xE917;</i>
+                            <span>Report</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-small">
+                            <router-link class="dropdown-item " to="/credit-report">Credit Report</router-link>
+                            <router-link class="dropdown-item " to="/debit-report">Debit Report</router-link>
+                            <router-link class="dropdown-item " to="/balance-sheet">Balance Sheet</router-link>
                         </div>
                     </li>
                 </ul>

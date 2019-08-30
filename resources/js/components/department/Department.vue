@@ -38,10 +38,10 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <DepartmentEdit-component v-for="department in departments.data"
+                                <departmentEdit v-for="department in departments.data"
                                                           v-bind:department="department"
                                                           @delete-departments="deleteDepartment"
-                                                          v-bind:key="department.id"></DepartmentEdit-component>
+                                                          v-bind:key="department.id"></departmentEdit>
                                 </tbody>
                             </table>
                         </perfect-scrollbar>
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+    import departmentEdit from './DepartmentEdit'
     export default {
         data() {
             return {
@@ -150,6 +151,9 @@
             Fire.$on('AfterCreate', () => {
                 this.loadDepartment();
             });
+        },
+        components:{
+            departmentEdit
         }
     }
 </script>

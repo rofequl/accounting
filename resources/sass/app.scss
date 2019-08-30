@@ -8,10 +8,12 @@ $fa-font-path:        "../webfonts";
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-// Bootstrap
+// fontawesome
 @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "~@fortawesome/fontawesome-free/scss/solid.scss";
 @import "~@fortawesome/fontawesome-free/scss/brands.scss";
+
+@import "~select2-theme-bootstrap4/dist/select2-bootstrap.min.css";
 
 .router-link-exact-active{
     box-shadow: inset 0.1875rem 0 0 #007bff;
@@ -22,4 +24,14 @@ $fa-font-path:        "../webfonts";
 .router-link-exact-active i,
 .router-link-exact-active span{
     color: #007bff!important;
+}
+
+.select2-selection__rendered {
+    line-height: 31px !important;
+}
+.select2-container .select2-selection--single {
+    height: 35px !important;
+}
+.select2-selection__arrow {
+    height: 34px !important;
 }

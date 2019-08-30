@@ -1,17 +1,24 @@
-
-
 require('./bootstrap');
 
 window.Vue = require('vue');
 import moment from 'moment';
-import { Form, HasError, AlertError } from 'vform'
-
+import {Form, HasError, AlertError} from 'vform'
 import PerfectScrollbar from 'vue2-perfect-scrollbar'
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css'
+import datePicker from 'vue-bootstrap-datetimepicker';
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+import Select2 from 'v-select2-component';
+import Print from 'vue-print-nb'
+import swal from 'sweetalert2'
 
+Vue.component('Select2', Select2);
+Vue.use(datePicker);
 Vue.use(PerfectScrollbar)
 
-import swal from 'sweetalert2'
+
+Vue.use(Print);
+
+
 window.swal = swal;
 
 const toast = swal.mixin({
@@ -41,9 +48,15 @@ Vue.use(VueProgressBar, {
 })
 
 let routes = [
-    { path: '/', component: require('./components/Dashboard').default },
-    { path: '/department', component: require('./components/department/Department').default },
-    { path: '/income-source', component: require('./components/incomesource/IncomeSource').default }
+    {path: '/', component: require('./components/Dashboard').default},
+    {path: '/department', component: require('./components/department/Department').default},
+    {path: '/income-source', component: require('./components/incomesource/IncomeSource').default},
+    {path: '/expenditure', component: require('./components/expenditure/Expenditure').default},
+    {path: '/credit', component: require('./components/entry/Credit').default},
+    {path: '/debit', component: require('./components/entry/Debit').default},
+    {path: '/credit-report', component: require('./components/report/CreditReport').default},
+    {path: '/debit-report', component: require('./components/report/DebitReport').default},
+    {path: '/balance-sheet', component: require('./components/report/BalanceSheet').default},
 ]
 
 const router = new VueRouter({
@@ -52,17 +65,26 @@ const router = new VueRouter({
 })
 
 Vue.filter('myDate', function (value) {
-   return moment(value).format('MMMM Do YYYY');
+    return moment(value).format('MMMM Do YYYY');
 });
 
 window.Fire = new Vue();
 
-Vue.component('DepartmentEdit-component', require('./components/department/DepartmentEdit').default);
 Vue.component('home-component', require('./components/Home').default);
-
 
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    ready: function () {
+        this.fetchTips();
+    },
+    methods: {
+        fetchTips: function () {
+            this.$http.get('/api/tips', function (tips) {
+                this.$set('tips', tips)
+            });
+        }
+
+    }
 });

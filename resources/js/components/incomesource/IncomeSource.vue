@@ -42,7 +42,7 @@
                         </perfect-scrollbar>
                     </div>
                     <div class="card-footer">
-                        <pagination :data="departments" @pagination-change-page="getResults">
+                        <pagination :data="incomes" @pagination-change-page="getResults">
                             <span slot="prev-nav">&lt; Previous</span>
                             <span slot="next-nav">Next &gt;</span>
                         </pagination>
@@ -123,9 +123,9 @@
                 axios.get('api/incomesource').then(({data}) => (this.incomes = data));
             },
             getResults(page = 1) {
-                axios.get('api/department?page=' + page)
+                axios.get('api/incomesource?page=' + page)
                     .then(response => {
-                        this.departments = response.data;
+                        this.incomes = response.data;
                     });
             },
             deleteIncome(id) {

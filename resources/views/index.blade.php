@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Shards Dashboard Lite - Free Bootstrap Admin Template – DesignRevision</title>
+    <title>Army Golf Club | Account Manage</title>
     <meta name="description"
-          content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+          content="Account Manage Debit Credit All Do easily.">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="css/app.css" rel="stylesheet">

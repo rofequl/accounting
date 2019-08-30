@@ -32,7 +32,7 @@ class IncomesourceController extends Controller
 
     public function show($id)
     {
-        //
+        return income_source::where('department_id',$id)->get();
     }
 
     public function update(Request $request, $id)

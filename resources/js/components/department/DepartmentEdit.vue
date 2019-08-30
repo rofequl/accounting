@@ -5,7 +5,7 @@
             <input type="text" class="form-control" v-model="form.name" v-if="edit">
             <span v-else>{{department.name}}</span>
         </td>
-        <td>0</td>
+        <td>{{department.income_source.length}}</td>
         <td>{{department.updated_at | myDate}}</td>
         <td>
             <div class="btn-group d-table mx-auto" role="group" aria-label="Basic example">

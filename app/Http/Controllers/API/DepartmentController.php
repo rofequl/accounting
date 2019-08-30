@@ -10,7 +10,12 @@ class DepartmentController extends Controller
 {
     public function index()
     {
-        return department::latest()->paginate(10);
+        return department::with('income_source')->latest()->paginate(10);
+    }
+
+    public function DepartmentAll()
+    {
+        return department::all();
     }
 
     public function store(Request $request)

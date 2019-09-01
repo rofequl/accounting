@@ -96,13 +96,21 @@
                         this.$Progress.start()
                         this.form.delete('api/department/' + id)
                             .then((data) => {
-                                Fire.$emit('AfterCreate');
-                                swal.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                )
-                                this.$Progress.finish()
+                                if(data.data.error){
+                                    swal.fire(
+                                        'Can\'t Deleted!',
+                                        data.data.error,
+                                        'warning'
+                                    )
+                                }else{
+                                    Fire.$emit('AfterCreate');
+                                    swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                    )
+                                    this.$Progress.finish()
+                                }
                             })
                             .catch(() => {
                                 this.$Progress.fail()

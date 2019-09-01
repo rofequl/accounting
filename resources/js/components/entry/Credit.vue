@@ -28,10 +28,10 @@
                                     <th scope="col" class="border-0">Voucher No</th>
                                     <th scope="col" class="border-0">Department</th>
                                     <th scope="col" class="border-0">Income Source</th>
-                                    <th scope="col" class="border-0">Payment Mode</th>
-                                    <th scope="col" class="border-0">Bank Deposit</th>
-                                    <th scope="col" class="border-0">Previous Bank Deposit</th>
                                     <th scope="col" class="border-0">Amount</th>
+                                    <th scope="col" class="border-0">Payment Method</th>
+                                    <th scope="col" class="border-0">Previous Balance</th>
+                                    <th scope="col" class="border-0">Total Amount</th>
                                     <th scope="col" class="border-0">Action</th>
                                 </tr>
                                 </thead>
@@ -41,16 +41,17 @@
                                     <td>{{credit.voucher_no}}</td>
                                     <td>{{credit.department.name}}</td>
                                     <td>{{credit.income_source.income_source}}</td>
-                                    <td>{{credit.payment_mode}}</td>
-                                    <td>{{credit.bank_deposit}}</td>
-                                    <td>{{credit.previous_bank_balance}}</td>
                                     <td>{{credit.amount}}</td>
+                                    <td>{{credit.payment.name}}</td>
+                                    <td>{{credit.previous_amount}}</td>
+                                    <td>{{credit.total_amount}}</td>
                                     <td>
-                                        <div class="btn-group d-inline-flex mx-auto" role="group" aria-label="Basic example">
-                                            <button type="button" @click="NewModalUpdate(credit)"
-                                                    class="btn btn-sm btn-white"><i
-                                                class="fas fa-edit mr-1"></i>
-                                            </button>
+                                        <div class="btn-group d-inline-flex mx-auto" role="group"
+                                             aria-label="Basic example">
+<!--                                            <button type="button" @click="NewModalUpdate(credit)"-->
+<!--                                                    class="btn btn-sm btn-white"><i-->
+<!--                                                class="fas fa-edit mr-1"></i>-->
+<!--                                            </button>-->
                                             <button type="button" @click="deleteCredit(credit.id)"
                                                     class="btn btn-sm btn-white"><i
                                                 class="fas fa-trash mr-1"></i>
@@ -83,7 +84,8 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="editMode ? updateCredit() : createCredit()" @keydown="form.onKeydown($event)">
+                    <form @submit.prevent="editMode ? updateCredit() : createCredit()"
+                          @keydown="form.onKeydown($event)">
                         <div class="modal-body">
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -123,54 +125,56 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <select class="form-control" v-model="form.payment_mode" name="payment_mode"
-                                            :class="{ 'is-invalid': form.errors.has('payment_mode') }">
-                                        <option value="" selected="" disabled>Choose Income Source</option>
-                                        <option value="Cash on hand">Cash on hand</option>
-                                        <option value="Debit Card">Debit Card</option>
-                                        <option value="Credit Card">Credit Card</option>
-                                        </option>
-                                    </select>
-                                    <has-error :form="form" field="payment_mode"></has-error>
-                                </div>
-                                <div class="form-group col-md-6">
                                     <div class="input-group input-group-seamless">
-                                        <input type="text" v-model="form.bank_deposit" name="bank_deposit"
-                                               class="form-control" id="bank_deposit"
-                                               placeholder="Bank Deposit"
-                                               :class="{ 'is-invalid': form.errors.has('bank_deposit') }">
+                                        <input type="number" v-model.number="form.amount" name="amount"
+                                               class="form-control" v-on:keyup="keytotal"
+                                               id="amount" min="0"
+                                               placeholder="Amount"
+                                               :class="{ 'is-invalid': form.errors.has('amount') }">
                                         <span class="input-group-append">
-                                          <span class="input-group-text">$</span>
+                                          <span class="input-group-text">&#2547;</span>
                                         </span>
                                     </div>
-                                    <has-error :form="form" field="bank_deposit"></has-error>
+                                    <has-error :form="form" field="amount"></has-error>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <select class="form-control" @change="changePayment($event)"
+                                            v-model="form.payment_id" name="payment_id"
+                                            :class="{ 'is-invalid': form.errors.has('payment_id') }">
+                                        <option value="" selected="" disabled>Choose Payment Method</option>
+                                        <option v-for="payment in payments"
+                                                v-bind:value="payment.id">{{payment.name}}
+                                        </option>
+                                    </select>
+                                    <has-error :form="form" field="payment_id"></has-error>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <div class="input-group input-group-seamless">
-                                        <input type="text" v-model="form.previous_bank_balance"
-                                               name="previous_bank_balance"
-                                               class="form-control" id="previous_bank_balance"
-                                               placeholder="Previous Bank Balance"
-                                               :class="{ 'is-invalid': form.errors.has('previous_bank_balance') }">
+                                        <input type="number" v-model.number="form.previous_amount"
+                                               name="previous_amount"
+                                               class="form-control" id="previous_amount"
+                                               placeholder="Previous Balance"
+                                               :class="{ 'is-invalid': form.errors.has('previous_amount') }" readonly>
                                         <span class="input-group-append">
-                                          <span class="input-group-text">$</span>
+                                          <span class="input-group-text">&#2547;</span>
                                         </span>
                                     </div>
-                                    <has-error :form="form" field="previous_bank_balance"></has-error>
+                                    <has-error :form="form" field="previous_amount"></has-error>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <div class="input-group input-group-seamless">
-                                        <input type="text" v-model="form.amount" name="amount" class="form-control"
-                                               id="amount"
-                                               placeholder="Amount"
-                                               :class="{ 'is-invalid': form.errors.has('amount') }">
+                                        <input type="text" v-model="form.total_amount"
+                                               name="total_amount"
+                                               class="form-control" id="total_amount"
+                                               placeholder="Total Amount"
+                                               :class="{ 'is-invalid': form.errors.has('total_amount') }" readonly>
                                         <span class="input-group-append">
-                                          <span class="input-group-text">$</span>
+                                          <span class="input-group-text">&#2547;</span>
                                         </span>
                                     </div>
-                                    <has-error :form="form" field="amount"></has-error>
+                                    <has-error :form="form" field="total_amount"></has-error>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -183,7 +187,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                             <button type="submit" v-if="editMode" class="btn btn-primary">Update</button>
-                            <button type="submit" v-if="!editMode"  class="btn btn-primary">Create</button>
+                            <button type="submit" v-if="!editMode" class="btn btn-primary">Create</button>
                         </div>
                     </form>
                 </div>
@@ -197,6 +201,7 @@
         data() {
             return {
                 departments: {},
+                payments: {},
                 incomes: {},
                 credits: {},
                 editMode: false,
@@ -206,9 +211,9 @@
                     voucher_no: '',
                     department_id: '',
                     income_source_id: '',
-                    payment_mode: '',
-                    bank_deposit: '',
-                    previous_bank_balance: '',
+                    payment_id: '',
+                    previous_amount: '',
+                    total_amount: '',
                     amount: '',
                     remarks: ''
                 }),
@@ -224,7 +229,7 @@
                 this.form.reset();
                 this.form.clear();
                 this.editMode = false,
-                this.form.date = this.date;
+                    this.form.date = this.date;
                 this.form.voucher_no = Math.floor(Math.random() * 899) + 100 + '' + this.credits.total;
                 $('#addNew').modal('show');
                 $('#addNewLabel').html('Insert credit entry');
@@ -234,13 +239,13 @@
                 this.form.clear();
                 axios.get('api/incomesource/' + data.department_id).then(({data}) => (this.incomes = data));
                 this.form.fill(data);
-                this.editMode = true,
-                $('#addNew').modal('show');
+                this.editMode = true;
+                    $('#addNew').modal('show');
                 $('#addNewLabel').html('Update credit entry');
             },
             updateCredit() {
                 this.$Progress.start()
-                this.form.put('api/credit/'+this.form.id)
+                this.form.put('api/credit/' + this.form.id)
                     .then(() => {
                         toast.fire({
                             type: 'success',
@@ -258,9 +263,26 @@
             },
             changeDepartment(event) {
                 axios.get('api/incomesource/' + event.target.value).then(({data}) => (this.incomes = data));
+                this.form.income_source_id = ''
+            },
+            changePayment(event) {
+                axios.get('api/payment/' + event.target.value).then(data => {
+                    this.form.previous_amount = data.data.amount == null ? 0 : data.data.amount;
+                    let number = isNaN(parseFloat(this.form.amount)) ? 0 : parseFloat(this.form.amount);
+                    let number2 = isNaN(parseFloat(data.data.amount)) ? 0 : parseFloat(data.data.amount);
+                    this.form.total_amount = number + number2;
+                });
             },
             loadDepartment() {
                 axios.get('api/department-all').then(({data}) => (this.departments = data));
+            },
+            keytotal: function () {
+                let number = isNaN(parseFloat(this.form.amount)) ? 0 : parseFloat(this.form.amount);
+                let number2 = isNaN(parseFloat(this.form.previous_amount)) ? 0 : parseFloat(this.form.previous_amount);
+                this.form.total_amount = number + number2;
+            },
+            loadPayment() {
+                axios.get('api/payment-all').then(({data}) => (this.payments = data));
             },
             loadCredit() {
                 axios.get('api/credit').then(({data}) => (this.credits = data));
@@ -322,10 +344,11 @@
         created() {
             this.loadCredit();
             this.loadDepartment();
+            this.loadPayment();
             Fire.$on('AfterCreate', () => {
                 this.loadCredit();
             });
-        },
+        }
     }
 </script>
 

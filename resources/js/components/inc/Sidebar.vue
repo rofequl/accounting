@@ -51,6 +51,16 @@
                             <router-link class="dropdown-item " to="/expenditure">Expenditure Head</router-link>
                         </div>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                            <i class="material-icons">&#xE917;</i>
+                            <span>Payment Manage</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-small">
+                            <router-link class="dropdown-item " to="/payment">Payment System</router-link>
+                            <router-link class="dropdown-item " to="/payment-report">Payment Report</router-link>
+                        </div>
+                    </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/credit">
                             <i class="material-icons">&#xE917;</i>

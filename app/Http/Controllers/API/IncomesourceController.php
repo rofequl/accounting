@@ -52,7 +52,10 @@ class IncomesourceController extends Controller
     public function destroy($id)
     {
         $department = income_source::findOrFail($id);
+        if ($department->credit->count() > 0){
+            return ['error'=>'This income source all ready used, you can\'t delete'];
+        }
         $department->delete();
-        return ['message'=>'User deleted'];
+        return ['message'=>'Income source deleted'];
     }
 }

@@ -44,13 +44,15 @@ import VueProgressBar from 'vue-progressbar'
 Vue.use(VueProgressBar, {
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
-    height: '2px'
+    height: '4px'
 })
 
 let routes = [
     {path: '/', component: require('./components/Dashboard').default},
     {path: '/department', component: require('./components/department/Department').default},
     {path: '/income-source', component: require('./components/incomesource/IncomeSource').default},
+    {path: '/payment', component: require('./components/payment/Payment').default},
+    {path: '/payment-report', component: require('./components/payment/PaymentReport').default},
     {path: '/expenditure', component: require('./components/expenditure/Expenditure').default},
     {path: '/credit', component: require('./components/entry/Credit').default},
     {path: '/debit', component: require('./components/entry/Debit').default},

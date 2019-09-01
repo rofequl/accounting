@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\credit;
+use App\payment;
 use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ class CreditController extends Controller
 {
     public function index()
     {
-        return credit::with('department', 'income_source')->latest()->paginate(10);
+        return credit::with('department', 'income_source','payment')->latest()->paginate(10);
 
     }
 
@@ -68,13 +69,13 @@ class CreditController extends Controller
     {
         $this->validate($request, [
             'date' => "Required",
-            'voucher_no' => 'Required',
+            'voucher_no' => 'Required|unique:credits,voucher_no,',
             'department_id' => 'Required',
             'income_source_id' => 'Required',
-            'payment_mode' => 'Required',
-            'bank_deposit' => 'max:191',
-            'previous_bank_balance' => 'max:191',
-            'amount' => 'Required|integer',
+            'amount' => 'Required|integer|digits_between:1,10',
+            'payment_id' => 'Required',
+            'previous_amount' => 'Required|integer',
+            'total_amount' => 'Required|integer',
             'remarks' => 'max:191',
         ]);
 
@@ -85,17 +86,21 @@ class CreditController extends Controller
         $insert->voucher_no = $request->voucher_no;
         $insert->department_id = $request->department_id;
         $insert->income_source_id = $request->income_source_id;
-        $insert->payment_mode = $request->payment_mode;
-        $insert->bank_deposit = $request->bank_deposit;
-        $insert->previous_bank_balance = $request->previous_bank_balance;
         $insert->amount = $request->amount;
+        $insert->payment_id = $request->payment_id;
+        $insert->previous_amount = $request->previous_amount;
+        $insert->total_amount = $request->total_amount;
         $insert->remarks = $request->remarks;
         $insert->save();
+
+        $insert2 = payment::findOrFail($request->payment_id);
+        $insert2->amount = $request->total_amount;
+        $insert2->save();
     }
 
     public function show($id)
     {
-        //
+
     }
 
     public function update(Request $request, $id)
@@ -127,6 +132,12 @@ class CreditController extends Controller
     public function destroy($id)
     {
         $department = credit::findOrFail($id);
+
+        $insert2 = payment::findOrFail($department->payment_id);
+        $amount = $insert2->amount - $department->amount;
+        $insert2->amount = $amount;
+        $insert2->save();
+
         $department->delete();
         return ['message' => 'User deleted'];
     }

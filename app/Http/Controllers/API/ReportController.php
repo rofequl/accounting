@@ -19,7 +19,7 @@ class ReportController extends Controller
     public function index()
     {
         $debit = debit::select('date', DB::raw('SUM(amount) as total_debit'))->groupBy('date')->get()->toArray();
-        $credit = credit::select('date', DB::raw('SUM(amount) as total_credit, SUM(previous_bank_balance) as bank_balance'))->groupBy('date')->get()->toArray();
+        $credit = credit::select('date', DB::raw('SUM(amount) as total_credit, SUM(previous_amount) as bank_balance'))->groupBy('date')->get()->toArray();
         $data = array_merge($debit, $credit);
         $collectionOld = new Collection($data);
         $collectionOld = $collectionOld->sortByDesc('date');
@@ -64,7 +64,7 @@ class ReportController extends Controller
 
     public function TotalBalanceSheet(Request $request){
         $debit = debit::select('date', DB::raw('SUM(amount) as total_debit'))->groupBy('date')->get()->toArray();
-        $credit = credit::select('date', DB::raw('SUM(amount) as total_credit, SUM(previous_bank_balance) as bank_balance'))->groupBy('date')->get()->toArray();
+        $credit = credit::select('date', DB::raw('SUM(amount) as total_credit, SUM(previous_amount) as bank_balance'))->groupBy('date')->get()->toArray();
         $data = array_merge($debit, $credit);
         $collectionOld = new Collection($data);
         $collectionOld = $collectionOld->sortByDesc('date');
@@ -103,7 +103,7 @@ class ReportController extends Controller
             $collection[$keys] += ['total_balance' => $collection[$keys]['profit_loss'] + $collection[$keys]['bank_balance']];
         }
 
-        $chunk = $collection->sum('total_balance');
+        $chunk = $collection->sum('profit_loss');
         return $chunk;
     }
 
@@ -111,7 +111,7 @@ class ReportController extends Controller
     {
         $action = 'hide';
         $debit = debit::select('date', DB::raw('SUM(amount) as total_debit'));
-        $credit = credit::select('date', DB::raw('SUM(amount) as total_credit, SUM(previous_bank_balance) as bank_balance'));
+        $credit = credit::select('date', DB::raw('SUM(amount) as total_credit, SUM(previous_amount) as bank_balance'));
         if ($request->date != null) {
             $date = DateTime::createFromFormat('d/m/Y', $request->date);
             $debit = $debit->where('date', $date->format('Y-m-d'));
@@ -171,7 +171,7 @@ class ReportController extends Controller
         }
 
         $output = array(
-            'sum' => $collection->sum('total_balance'),
+            'sum' => $collection->sum('profit_loss'),
             'data' => $collection,
             'action' => $action,
         );

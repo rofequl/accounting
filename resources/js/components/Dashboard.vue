@@ -20,13 +20,11 @@
                         <div class="container-fluid px-0">
                             <table class="table mb-0">
                                 <thead class="py-2 bg-light text-semibold border-bottom">
-                                <tr>
+                                <tr class="text-center">
                                     <th>Date</th>
                                     <th>Total Credits</th>
                                     <th class="text-center">Total Debit</th>
                                     <th class="text-center">Profit/Loss</th>
-                                    <th class="text-center">Previous Bank Balance</th>
-                                    <th class="text-right">Total Balance</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -35,8 +33,6 @@
                                     <td>{{balances.total_credit}}</td>
                                     <td>{{balances.total_debit}}</td>
                                     <td>{{balances.profit_loss}}</td>
-                                    <td>{{balances.bank_balance}}</td>
-                                    <td>{{balances.total_balance}}</td>
                                 </tr>
                                 </tbody>
                             </table>

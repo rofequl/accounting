@@ -18,13 +18,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResources([
-    'department'=> 'API\DepartmentController',
+    'department' => 'API\DepartmentController',
     'incomesource' => 'API\IncomesourceController',
+    'payment' => 'API\PaymentController',
     'expenditure' => 'API\ExpenditureController',
     'credit' => 'API\CreditController',
     'debit' => 'API\DebitController'
-    ]);
+]);
 Route::get('department-all', 'API\DepartmentController@DepartmentAll');
+Route::get('payment-all', 'API\PaymentController@PaymentAll');
+Route::post('payment-report', 'API\PaymentController@PaymentReport');
 Route::get('expenditure-all', 'API\ExpenditureController@ExpenditureAll');
 Route::post('credit-report', 'API\CreditController@SearchCreditReport');
 Route::get('credit-month', 'API\CreditController@CreditMonth');

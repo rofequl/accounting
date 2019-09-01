@@ -19,10 +19,10 @@ class CreateCreditsTable extends Migration
             $table->string('voucher_no');
             $table->integer('department_id');
             $table->integer('income_source_id');
-            $table->string('payment_mode');
-            $table->string('bank_deposit')->nullable();
-            $table->string('previous_bank_balance')->nullable();
             $table->string('amount');
+            $table->integer('payment_id');
+            $table->string('previous_amount');
+            $table->string('total_amount');
             $table->string('remarks')->nullable();
             $table->timestamps();
         });

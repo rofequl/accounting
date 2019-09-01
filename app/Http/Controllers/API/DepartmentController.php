@@ -59,7 +59,11 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         $department = department::findOrFail($id);
+        if ($department->income_source->count() > 0 || $department->credit->count() > 0 || $department->debit->count() > 0){
+            return ['error'=>'This department all ready used, you can\'t delete'];
+        }
         $department->delete();
         return ['message'=>'User deleted'];
+
     }
 }

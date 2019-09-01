@@ -3,8 +3,8 @@
         <!-- Page Header -->
         <div class="page-header row no-gutters py-4">
             <div class="col-12 col-sm-4 text-center text-sm-left mb-4 mb-sm-0">
-                <span class="text-uppercase page-subtitle">Credit Setup</span>
-                <h3 class="page-title">Source of income</h3>
+                <span class="text-uppercase page-subtitle">Payment Manage</span>
+                <h3 class="page-title">Payment System</h3>
             </div>
         </div>
         <!-- End Page Header -->
@@ -14,8 +14,8 @@
                 <div class="card card-small mb-4">
                     <div class="card-header border-bottom">
                         <div class="input-group col-md-6 col-lg-4 ml-auto">
-                            <button class="btn btn-primary ml-auto" @click="NewModal"><i class="fas fa-plus mr-2"></i>Add
-                                new income source
+                            <button class="btn btn-primary ml-auto" @click="NewModal"><i class="fas fa-plus mr-2"></i>
+                                Create Payment System
                             </button>
                         </div>
                     </div>
@@ -25,27 +25,20 @@
                                 <thead class="bg-light">
                                 <tr>
                                     <th scope="col" class="border-0">#</th>
-                                    <th scope="col" class="border-0">Income Source Name</th>
-                                    <th scope="col" class="border-0">Department</th>
-                                    <th scope="col" class="border-0">Remarks</th>
-                                    <th scope="col" class="border-0">Modify</th>
+                                    <th scope="col" class="border-0">Payment System Name</th>
+                                    <th scope="col" class="border-0">Amount</th>
+                                    <th scope="col" class="border-0">Last Modify</th>
                                     <th scope="col" class="border-0">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <incomesource v-for="income in incomes.data" :departments="departments"
-                                                          v-bind:income="income"
-                                                          @delete-income="deleteIncome"
-                                                          v-bind:key="income.id"></incomesource>
+                                <paymentedit v-for="payment in payments.data"
+                                              v-bind:payment="payment"
+                                              @delete-payment="deletePayment"
+                                              v-bind:key="payment.id"></paymentedit>
                                 </tbody>
                             </table>
                         </perfect-scrollbar>
-                    </div>
-                    <div class="card-footer">
-                        <pagination :data="incomes" @pagination-change-page="getResults">
-                            <span slot="prev-nav">&lt; Previous</span>
-                            <span slot="next-nav">Next &gt;</span>
-                        </pagination>
                     </div>
                 </div>
             </div>
@@ -57,33 +50,30 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addNewLabel">Add New Income Source</h5>
+                        <h5 class="modal-title" id="addNewLabel">Create a new payment system</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="createIncome" @keydown="form.onKeydown($event)">
+                    <form @submit.prevent="createPayment" @keydown="form.onKeydown($event)">
                         <div class="modal-body">
                             <div class="form-group">
-                                <input type="text" v-model="form.income_source" name="income_source" class="form-control" id="validationServer01"
-                                       placeholder="Income Source Name" :class="{ 'is-invalid': form.errors.has('income_source') }">
-                                <has-error :form="form" field="income_source"></has-error>
+                                <input type="text" v-model="form.name" name="name" class="form-control" id="validationServer01"
+                                       placeholder="Payment System Name" :class="{ 'is-invalid': form.errors.has('name') }">
+                                <has-error :form="form" field="name"></has-error>
                             </div>
                             <div class="form-group">
-                                <select class="form-control" v-model="form.department_id" name="department_id"
-                                        :class="{ 'is-invalid': form.errors.has('department_id') }">
-                                    <option value="" selected="" disabled>Choose Department</option>
-                                    <option v-for="department in departments.data"
-                                            v-bind:value="department.id">{{department.name}}</option>
-                                </select>
-                                <has-error :form="form" field="department_id"></has-error>
+                                <div class="input-group input-group-seamless">
+                                    <input type="number" v-model="form.amount" name="amount" class="form-control"
+                                           id="amount"
+                                           placeholder="Amount"
+                                           :class="{ 'is-invalid': form.errors.has('amount') }">
+                                    <span class="input-group-append">
+                                          <span class="input-group-text">&#2547;</span>
+                                        </span>
+                                    <has-error :form="form" class="d-block" field="amount"></has-error>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" v-model="form.remarks" name="remarks" class="form-control" id="validationServer01"
-                                       placeholder="Remarks" :class="{ 'is-invalid': form.errors.has('remarks') }">
-                                <has-error :form="form" field="remarks"></has-error>
-                            </div>
-
 
                         </div>
                         <div class="modal-footer">
@@ -98,37 +88,45 @@
 </template>
 
 <script>
-    import incomesource from './incomeSourceEdit';
+    import paymentedit from './PaymentEdit';
     export default {
         data() {
             return {
-                departments: {},
-                incomes: {},
+                payments: {},
                 form: new Form({
-                    income_source: '',
-                    department_id: '',
-                    remarks: ''
+                    name: '',
+                    amount: ''
                 })
             }
         },
         methods: {
             NewModal() {
                 this.form.reset();
+                this.form.clear();
                 $('#addNew').modal('show');
             },
-            loadDepartment() {
-                axios.get('api/department').then(({data}) => (this.departments = data));
+            createPayment() {
+                this.$Progress.start()
+                this.form.post('api/payment')
+                    .then(() => {
+                        toast.fire({
+                            type: 'success',
+                            title: 'Payment System create successfully'
+                        })
+                        this.form.reset()
+                        Fire.$emit('AfterCreate')
+                        this.$Progress.finish()
+                        $('#addNew').modal('hide');
+                    })
+                    .catch(()=>{
+                        this.$Progress.fail()
+                        swal("Failed!", 'There was something wrong.', 'warning')
+                    })
             },
-            loadIncome() {
-                axios.get('api/incomesource').then(({data}) => (this.incomes = data));
+            loadPayment() {
+                axios.get('api/payment').then(({data}) => (this.payments = data));
             },
-            getResults(page = 1) {
-                axios.get('api/incomesource?page=' + page)
-                    .then(response => {
-                        this.incomes = response.data;
-                    });
-            },
-            deleteIncome(id) {
+            deletePayment(id) {
                 swal.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -140,7 +138,7 @@
                 }).then((result) => {
                     if (result.value) {
                         this.$Progress.start()
-                        this.form.delete('api/incomesource/' + id)
+                        this.form.delete('api/payment/' + id)
                             .then((data) => {
                                 if(data.data.error){
                                     swal.fire(
@@ -165,34 +163,15 @@
                     }
                 })
             },
-            createIncome() {
-                this.$Progress.start()
-                this.form.post('api/incomesource')
-                    .then(() => {
-                        toast.fire({
-                            type: 'success',
-                            title: 'Income source name create successfully'
-                        })
-                        this.form.reset()
-                        Fire.$emit('AfterCreate')
-                        this.$Progress.finish()
-                        $('#addNew').modal('hide');
-                    })
-                    .catch(()=>{
-                        this.$Progress.fail()
-                        swal("Failed!", 'There was something wrong.', 'warning')
-                    })
-            }
         },
         created() {
-            this.loadDepartment();
-            this.loadIncome();
+            this.loadPayment();
             Fire.$on('AfterCreate', () => {
-                this.loadIncome();
+                this.loadPayment();
             });
         },
         components:{
-            incomesource
+            paymentedit
         }
     }
 </script>

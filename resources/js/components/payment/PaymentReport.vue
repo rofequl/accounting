@@ -3,8 +3,8 @@
         <!-- Page Header -->
         <div class="page-header row no-gutters py-4">
             <div class="col-12 col-sm-4 text-center text-sm-left mb-4 mb-sm-0">
-                <span class="text-uppercase page-subtitle">Report</span>
-                <h3 class="page-title">Balance Sheet</h3>
+                <span class="text-uppercase page-subtitle">Payment Manage</span>
+                <h3 class="page-title">Payment Report</h3>
             </div>
         </div>
         <!-- End Page Header -->
@@ -15,8 +15,14 @@
                     <div class="card-header border-bottom">
                         <div class="row">
                             <div class="col">
-                                <date-picker v-model="form.date" @dp-change="ChangeDepartment()"
-                                             :config="options"></date-picker>
+                                <select class="form-control" @change="ChangeDepartment()"
+                                        v-model="form.payment_id" name="payment_id"
+                                        :class="{ 'is-invalid': form.errors.has('payment_id') }">
+                                    <option value="" selected="" disabled>Choose Payment Method</option>
+                                    <option v-for="payment in payments"
+                                            v-bind:value="payment.id">{{payment.name}}
+                                    </option>
+                                </select>
                             </div>
                             <div class="col">
                                 <Select2 v-model="form.month" :options="month"
@@ -67,12 +73,6 @@
                             </table>
                         </perfect-scrollbar>
                     </div>
-                    <div class="card-footer">
-                        <pagination v-if="!action" :data="balance" @pagination-change-page="getResults">
-                            <span slot="prev-nav">&lt; Previous</span>
-                            <span slot="next-nav">Next &gt;</span>
-                        </pagination>
-                    </div>
                 </div>
             </div>
         </div>
@@ -88,9 +88,10 @@
                 month: [],
                 balance: {},
                 totalAmount: '',
+                payments: {},
                 action: false,
                 form: new Form({
-                    date: '',
+                    payment_id: '',
                     month: '',
                     department_id: '',
                 }),
@@ -101,9 +102,8 @@
             }
         },
         methods: {
-            loadBalance() {
-                axios.get('api/balance-sheet').then(({data}) => (this.balance = data));
-
+            loadPayment() {
+                axios.get('api/payment-all').then(({data}) => (this.payments = data));
             },
             getResults(page = 1) {
                 axios.get('api/balance-sheet?page=' + page)
@@ -137,7 +137,7 @@
             },
             ChangeDepartment() {
                 this.$Progress.start()
-                this.form.post('api/balance-sheet-search')
+                this.form.post('api/payment-report')
                     .then((data) => {
                         this.balance = data.data;
                         if (data.data.action === 'show') {
@@ -152,17 +152,15 @@
             },
             FromReset() {
                 this.form.reset();
-                this.action = false
-                Fire.$emit('AfterCreate')
+                this.action = false;
+                this.balance = '';
+
             }
         },
         created() {
-            this.loadBalance();
             this.loadDepartment();
+            this.loadPayment();
             this.loadMonth();
-            Fire.$on('AfterCreate', () => {
-                this.loadBalance();
-            });
         }
     }
 </script>

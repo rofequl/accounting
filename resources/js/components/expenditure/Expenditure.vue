@@ -31,16 +31,16 @@
                                 <thead class="bg-light">
                                 <tr>
                                     <th scope="col" class="border-0">#</th>
-                                    <th scope="col" class="border-0">expenditure Name</th>
+                                    <th scope="col" class="border-0">Expenditure Name</th>
                                     <th scope="col" class="border-0">Modify</th>
                                     <th scope="col" class="border-0">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <expenditure v-for="expenditure in expenditures.data"
-                                                          v-bind:expenditure="expenditure"
-                                                          @delete-expenditure="deleteExpenditure"
-                                                          v-bind:key="expenditure.id"></expenditure>
+                                             v-bind:expenditure="expenditure"
+                                             @delete-expenditure="deleteExpenditure"
+                                             v-bind:key="expenditure.id"></expenditure>
                                 </tbody>
                             </table>
                         </perfect-scrollbar>
@@ -62,6 +62,7 @@
 
 <script>
     import expenditure from './ExpenditureEdit';
+
     export default {
         data() {
             return {
@@ -95,13 +96,21 @@
                         this.$Progress.start()
                         this.form.delete('api/expenditure/' + id)
                             .then((data) => {
-                                Fire.$emit('AfterCreate');
-                                swal.fire(
-                                    'Deleted!',
-                                    'Your file has been deleted.',
-                                    'success'
-                                )
-                                this.$Progress.finish()
+                                if (data.data.error) {
+                                    swal.fire(
+                                        'Can\'t Deleted!',
+                                        data.data.error,
+                                        'warning'
+                                    )
+                                } else {
+                                    Fire.$emit('AfterCreate');
+                                    swal.fire(
+                                        'Deleted!',
+                                        'Your file has been deleted.',
+                                        'success'
+                                    )
+                                    this.$Progress.finish()
+                                }
                             })
                             .catch(() => {
                                 this.$Progress.fail()
@@ -151,7 +160,7 @@
                 this.loadExpenditure();
             });
         },
-        components:{
+        components: {
             expenditure
         }
     }

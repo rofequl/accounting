@@ -3,24 +3,26 @@
         <div class="main-navbar sticky-top bg-white">
             <!-- Main Navbar -->
             <nav class="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-                <form action="#" class="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
-                    <div class="input-group input-group-seamless ml-3">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text">
-                                <i class="fas fa-search"></i>
-                            </div>
-                        </div>
-                        <input class="navbar-search form-control" type="text" placeholder="Search for something..." aria-label="Search">
-                    </div>
-                </form>
+                <ul class="nav main-navbar__search w-100 d-none d-md-flex d-lg-flex py-2">
+                    <li class="nav-item">
+                        <router-link class="nav-link" style="color: #3d5170" to="/department">Department</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" style="color: #3d5170" to="/income-source">Source of income</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" style="color: #3d5170" to="/expenditure">Expenditure Head</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link class="nav-link" style="color: #3d5170" to="/payment">Payment System</router-link>
+                    </li>
+                </ul>
                 <ul class="navbar-nav border-left flex-row ">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             <img class="user-avatar rounded-circle mr-2" src="asset/images/avatars/0.jpg" alt="User Avatar"> <span class="d-none d-md-inline-block"></span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-small">
-                            <a class="dropdown-item" href="#"><i class="material-icons">&#xE7FD;</i> Profile</a>
-                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" style="cursor: pointer;" @click="logout">
                                 <i class="material-icons text-danger">&#xE879;</i> Logout </a>
                             <form id="logout-form" action="/logout" method="POST" style="display: none;">

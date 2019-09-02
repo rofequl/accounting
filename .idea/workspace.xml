@@ -3,30 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="60a4c709-1c9c-443d-b0d7-915e174bec1b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/CreditController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/CreditController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/DebitController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/DebitController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/DepartmentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/DepartmentController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/ExpenditureController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/ExpenditureController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/IncomesourceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/IncomesourceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/ReportController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/ReportController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/credit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/credit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/debit.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/debit.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_24_211019_create_credits_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_24_211019_create_credits_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2019_08_25_073103_create_debits_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_08_25_073103_create_debits_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/all.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/all.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/all.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/all.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/Dashboard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/Dashboard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/department/Department.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/department/Department.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/entry/Credit.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/entry/Credit.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/entry/Debit.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/entry/Debit.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/expenditure/Expenditure.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/expenditure/Expenditure.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/inc/Header.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/inc/Header.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/inc/Sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/inc/Sidebar.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/incomesource/IncomeSource.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/incomesource/IncomeSource.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/report/BalanceSheet.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/report/BalanceSheet.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -202,6 +185,7 @@
       <workItem from="1567184393191" duration="33000" />
       <workItem from="1567258148229" duration="24299000" />
       <workItem from="1567317310390" duration="3299000" />
+      <workItem from="1567401001498" duration="3128000" />
     </task>
     <servers />
   </component>

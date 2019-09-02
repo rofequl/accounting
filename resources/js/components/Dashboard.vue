@@ -10,6 +10,12 @@
         <!-- End Page Header -->
         <!-- Small Stats Blocks -->
         <div class="row">
+            <div class="col-12">
+                <router-link class="mb-2 btn btn-info mr-2" to="/credit-report">Credit Report</router-link>
+                <router-link class="mb-2 btn btn-info mr-2" to="/debit-report">Debit Report</router-link>
+                <router-link class="mb-2 btn btn-info mr-2" to="/payment-report">Payment Report</router-link>
+                <router-link class="mb-2 btn btn-info mr-2" to="/balance-sheet">Balance Sheet</router-link>
+            </div>
             <div class="col-lg-8 mb-4">
                 <div class="card card-small lo-stats h-100">
                     <div class="card-header border-bottom">

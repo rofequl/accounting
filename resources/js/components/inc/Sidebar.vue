@@ -52,14 +52,10 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                        <router-link class="nav-link" to="/payment">
                             <i class="material-icons">&#xE917;</i>
-                            <span>Payment Manage</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-small">
-                            <router-link class="dropdown-item " to="/payment">Payment System</router-link>
-                            <router-link class="dropdown-item " to="/payment-report">Payment Report</router-link>
-                        </div>
+                            <span>Payment System</span>
+                        </router-link>
                     </li>
                     <li class="nav-item">
                         <router-link class="nav-link" to="/credit">
@@ -81,6 +77,7 @@
                         <div class="dropdown-menu dropdown-menu-small">
                             <router-link class="dropdown-item " to="/credit-report">Credit Report</router-link>
                             <router-link class="dropdown-item " to="/debit-report">Debit Report</router-link>
+                            <router-link class="dropdown-item " to="/payment-report">Payment Report</router-link>
                             <router-link class="dropdown-item " to="/balance-sheet">Balance Sheet</router-link>
                         </div>
                     </li>

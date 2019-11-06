@@ -26,6 +26,7 @@
                                 <tr>
                                     <th scope="col" class="border-0">Sr</th>
                                     <th scope="col" class="border-0">Voucher No</th>
+                                    <th scope="col" class="border-0">Image</th>
                                     <th scope="col" class="border-0">Department</th>
                                     <th scope="col" class="border-0">Income Source</th>
                                     <th scope="col" class="border-0">Amount</th>
@@ -39,6 +40,9 @@
                                 <tr v-for="credit in credits.data" v-bind:key="credit.id">
                                     <td>{{credit.id}}</td>
                                     <td>{{credit.voucher_no}}</td>
+                                    <td>
+                                        <img :src="getProfilePhoto(credit.image)" style="cursor:pointer;" class="img-thumbnail" :class="randomClass(credit.image)" @click="randomUrl(credit.image)" width="80px">
+                                    </td>
                                     <td>{{credit.department.name}}</td>
                                     <td>{{credit.income_source.income_source}}</td>
                                     <td>{{credit.amount}}</td>
@@ -48,10 +52,10 @@
                                     <td>
                                         <div class="btn-group d-inline-flex mx-auto" role="group"
                                              aria-label="Basic example">
-<!--                                            <button type="button" @click="NewModalUpdate(credit)"-->
-<!--                                                    class="btn btn-sm btn-white"><i-->
-<!--                                                class="fas fa-edit mr-1"></i>-->
-<!--                                            </button>-->
+                                            <!--                                            <button type="button" @click="NewModalUpdate(credit)"-->
+                                            <!--                                                    class="btn btn-sm btn-white"><i-->
+                                            <!--                                                class="fas fa-edit mr-1"></i>-->
+                                            <!--                                            </button>-->
                                             <button type="button" @click="deleteCredit(credit.id)"
                                                     class="btn btn-sm btn-white"><i
                                                 class="fas fa-trash mr-1"></i>
@@ -177,11 +181,20 @@
                                     <has-error :form="form" field="total_amount"></has-error>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" v-model="form.remarks" name="remarks" class="form-control"
-                                       id="validationServer01"
-                                       placeholder="Remarks" :class="{ 'is-invalid': form.errors.has('remarks') }">
-                                <has-error :form="form" field="remarks"></has-error>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input type="text" v-model="form.remarks" name="remarks" class="form-control"
+                                           id="validationServer01"
+                                           placeholder="Remarks" :class="{ 'is-invalid': form.errors.has('remarks') }">
+                                    <has-error :form="form" field="remarks"></has-error>
+                                </div>
+                                <div class="input-group col-md-6 mb-3">
+                                    <div class="custom-file">
+                                        <input @change="imageUpload" name="image" type="file" class="custom-file-input"
+                                               id="customFile2">
+                                        <label class="custom-file-label" for="customFile2">Choose image...</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -215,7 +228,8 @@
                     previous_amount: '',
                     total_amount: '',
                     amount: '',
-                    remarks: ''
+                    remarks: '',
+                    image: ''
                 }),
                 date: new Date(),
                 options: {
@@ -225,11 +239,47 @@
             }
         },
         methods: {
+            randomClass (e) {
+                return e==null?'d-none':'';
+            },
+            randomUrl (e) {
+                window.open('image/credit/'+e, '_blank');
+
+            },
+            getProfilePhoto(e) {
+                return "image/credit/" + e;
+            },
+            imageUpload(e) {
+                let file = e.target.files[0];
+                if (!file.type.match('image.*')) {
+                    swal.fire(
+                        'Oops...!',
+                        `${file.name} is not an image..`,
+                        'error'
+                    );
+                    return;
+                }
+                if (file['size'] > 2111775) {
+                    swal.fire(
+                        'Oops...!',
+                        'You are uploading a learge file.',
+                        'error'
+                    );
+                    return;
+                }
+                let reader = new FileReader();
+                let vm = this;
+                reader.onloadend = (file) => {
+                    vm.form.image = reader.result;
+                    //console.log(reader.result);
+                };
+                reader.readAsDataURL(file);
+            },
             NewModal() {
                 this.form.reset();
                 this.form.clear();
-                this.editMode = false,
-                    this.form.date = this.date;
+                this.editMode = false;
+                this.form.date = this.date;
                 this.form.voucher_no = Math.floor(Math.random() * 899) + 100 + '' + this.credits.total;
                 $('#addNew').modal('show');
                 $('#addNewLabel').html('Insert credit entry');
@@ -240,7 +290,7 @@
                 axios.get('api/incomesource/' + data.department_id).then(({data}) => (this.incomes = data));
                 this.form.fill(data);
                 this.editMode = true;
-                    $('#addNew').modal('show');
+                $('#addNew').modal('show');
                 $('#addNewLabel').html('Update credit entry');
             },
             updateCredit() {

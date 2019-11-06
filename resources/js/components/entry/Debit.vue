@@ -26,6 +26,7 @@
                                 <tr>
                                     <th scope="col" class="border-0">Sr</th>
                                     <th scope="col" class="border-0">Voucher No</th>
+                                    <th scope="col" class="border-0">Image</th>
                                     <th scope="col" class="border-0">Department</th>
                                     <th scope="col" class="border-0">Expenditure Head</th>
                                     <th scope="col" class="border-0">Amount</th>
@@ -39,6 +40,9 @@
                                 <tr v-for="dedit in dedits.data" v-bind:key="dedit.id">
                                     <td>{{dedit.id}}</td>
                                     <td>{{dedit.voucher_no}}</td>
+                                    <td>
+                                        <img :src="getProfilePhoto(dedit.image)" style="cursor:pointer;" class="img-thumbnail" :class="randomClass(dedit.image)" @click="randomUrl(dedit.image)" width="80px">
+                                    </td>
                                     <td>{{dedit.department.name}}</td>
                                     <td>{{dedit.expenditure.name}}</td>
                                     <td>{{dedit.amount}}</td>
@@ -48,10 +52,10 @@
                                     <td>
                                         <div class="btn-group d-inline-flex mx-auto" role="group"
                                              aria-label="Basic example">
-<!--                                            <button type="button" @click="NewModalUpdate(dedit)"-->
-<!--                                                    class="btn btn-sm btn-white"><i-->
-<!--                                                class="fas fa-edit mr-1"></i>-->
-<!--                                            </button>-->
+                                            <!--                                            <button type="button" @click="NewModalUpdate(dedit)"-->
+                                            <!--                                                    class="btn btn-sm btn-white"><i-->
+                                            <!--                                                class="fas fa-edit mr-1"></i>-->
+                                            <!--                                            </button>-->
                                             <button type="button" @click="deleteDedit(dedit.id)"
                                                     class="btn btn-sm btn-white"><i
                                                 class="fas fa-trash mr-1"></i>
@@ -176,11 +180,20 @@
                                     <has-error :form="form" field="total_amount"></has-error>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <input type="text" v-model="form.remarks" name="remarks" class="form-control"
-                                       id="validationServer01"
-                                       placeholder="Remarks" :class="{ 'is-invalid': form.errors.has('remarks') }">
-                                <has-error :form="form" field="remarks"></has-error>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <input type="text" v-model="form.remarks" name="remarks" class="form-control"
+                                           id="validationServer01"
+                                           placeholder="Remarks" :class="{ 'is-invalid': form.errors.has('remarks') }">
+                                    <has-error :form="form" field="remarks"></has-error>
+                                </div>
+                                <div class="input-group col-md-6 mb-3">
+                                    <div class="custom-file">
+                                        <input @change="imageUpload" name="image" type="file" class="custom-file-input"
+                                               id="customFile2">
+                                        <label class="custom-file-label" for="customFile2">Choose image...</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -214,7 +227,8 @@
                     previous_amount: '',
                     total_amount: '',
                     amount: '',
-                    remarks: ''
+                    remarks: '',
+                    image: ''
                 }),
                 date: new Date(),
                 options: {
@@ -224,6 +238,42 @@
             }
         },
         methods: {
+            randomClass (e) {
+                return e==null?'d-none':'';
+            },
+            randomUrl (e) {
+                    window.open('image/credit/'+e, '_blank');
+
+            },
+            getProfilePhoto(e) {
+                return "image/credit/" + e;
+            },
+            imageUpload(e) {
+                let file = e.target.files[0];
+                if (!file.type.match('image.*')) {
+                    swal.fire(
+                        'Oops...!',
+                        `${file.name} is not an image..`,
+                        'error'
+                    );
+                    return;
+                }
+                if (file['size'] > 2111775) {
+                    swal.fire(
+                        'Oops...!',
+                        'You are uploading a learge file.',
+                        'error'
+                    );
+                    return;
+                }
+                let reader = new FileReader();
+                let vm = this;
+                reader.onloadend = (file) => {
+                    vm.form.image = reader.result;
+                    //console.log(reader.result);
+                };
+                reader.readAsDataURL(file);
+            },
             NewModal() {
                 this.form.reset();
                 this.form.clear();
@@ -321,7 +371,7 @@
             },
             updateDebit() {
                 this.$Progress.start()
-                this.form.put('api/debit/'+this.form.id)
+                this.form.put('api/debit/' + this.form.id)
                     .then(() => {
                         toast.fire({
                             type: 'success',

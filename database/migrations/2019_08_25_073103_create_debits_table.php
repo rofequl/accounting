@@ -24,6 +24,7 @@ class CreateDebitsTable extends Migration
             $table->string('previous_amount');
             $table->string('total_amount');
             $table->string('remarks')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

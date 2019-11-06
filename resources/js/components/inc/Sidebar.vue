@@ -6,7 +6,7 @@
                     <a class="navbar-brand w-100 mr-0" href="#" style="line-height: 25px;">
                         <div class="d-table m-auto">
                             <img id="main-logo" class="d-inline-block align-top mr-1" style="max-width: 25px;" src="asset/images/logo.jpg" alt="Shards Dashboard">
-                            <span class="d-none d-md-inline ml-1">Army Golf Club</span>
+                            <span class="d-none d-md-inline ml-1">Central Accounts</span>
                         </div>
                     </a>
                     <a class="toggle-sidebar d-sm-inline d-md-none d-lg-none">
@@ -27,6 +27,12 @@
             <div class="nav-wrapper">
                 <ul class="nav nav--no-borders flex-column">
                     <li class="nav-item">
+                        <a class="nav-link " href="http://nayem.kajerkhojay.com">
+                            <i class="material-icons">&#xE917;</i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <router-link class="nav-link " to="/">
                             <i class="fas fa-tachometer-alt"></i>
                             <span>Dashboard</span>
@@ -39,7 +45,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-small">
                             <router-link class="dropdown-item " to="/department">Department</router-link>
-                            <router-link class="dropdown-item " to="/income-source">Source of income</router-link>
+                            <router-link class="dropdown-item " to="/income-source">Source of Income</router-link>
                         </div>
                     </li>
                     <li class="nav-item dropdown">

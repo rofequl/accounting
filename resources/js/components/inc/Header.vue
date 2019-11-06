@@ -17,20 +17,20 @@
                         <router-link class="nav-link" style="color: #3d5170" to="/payment">Payment System</router-link>
                     </li>
                 </ul>
-                <ul class="navbar-nav border-left flex-row ">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <img class="user-avatar rounded-circle mr-2" src="asset/images/avatars/0.jpg" alt="User Avatar"> <span class="d-none d-md-inline-block"></span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-small">
-                            <a class="dropdown-item text-danger" style="cursor: pointer;" @click="logout">
-                                <i class="material-icons text-danger">&#xE879;</i> Logout </a>
-                            <form id="logout-form" action="/logout" method="POST" style="display: none;">
-                                <input type="hidden" name="_token" :value="token">
-                            </form>
-                        </div>
-                    </li>
-                </ul>
+<!--                <ul class="navbar-nav border-left flex-row ">-->
+<!--                    <li class="nav-item dropdown">-->
+<!--                        <a class="nav-link dropdown-toggle text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">-->
+<!--                            <img class="user-avatar rounded-circle mr-2" src="asset/images/avatars/0.jpg" alt="User Avatar"> <span class="d-none d-md-inline-block"></span>-->
+<!--                        </a>-->
+<!--                        <div class="dropdown-menu dropdown-menu-small">-->
+<!--                            <a class="dropdown-item text-danger" style="cursor: pointer;" @click="logout">-->
+<!--                                <i class="material-icons text-danger">&#xE879;</i> Logout </a>-->
+<!--                            <form id="logout-form" action="/logout" method="POST" style="display: none;">-->
+<!--                                <input type="hidden" name="_token" :value="token">-->
+<!--                            </form>-->
+<!--                        </div>-->
+<!--                    </li>-->
+<!--                </ul>-->
                 <nav class="nav">
                     <a href="#" class="nav-link nav-link-icon toggle-sidebar d-sm-inline d-md-none text-center border-left" data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
                         <i class="material-icons">&#xE5D2;</i>

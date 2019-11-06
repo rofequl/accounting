@@ -88,6 +88,11 @@ class DebitController extends Controller
         $insert->previous_amount = $request->previous_amount;
         $insert->total_amount = $request->total_amount;
         $insert->remarks = $request->remarks;
+        if($request->image){
+            $name = time().'.' . explode('/', explode(':', substr($request->image, 0, strpos($request->image, ';')))[1])[1];
+            \Image::make($request->image)->save(public_path('image/credit/').$name);
+            $insert->image = $name;
+        }
         $insert->save();
 
         $insert2 = payment::findOrFail($request->payment_id);
